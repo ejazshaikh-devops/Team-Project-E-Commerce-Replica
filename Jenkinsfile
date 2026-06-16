@@ -39,17 +39,20 @@ pipeline {
 
         stage('ECR Login') {
             steps {
-                sh '''
-                aws ecr get-login-password --region $AWS_REGION | \
-                docker login --username AWS --password-stdin $ECR_REGISTRY
-                '''
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                    sh '''
+                    aws ecr get-login-password --region $AWS_REGION | \
+                    docker login --username AWS --password-stdin $ECR_REGISTRY
+                    '''
+                }
             }
         }
 
         stage('Build and Push Images') {
             steps {
-                sh '''
-                BUILD_TAG=${BUILD_NUMBER}
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                    sh '''
+                    BUILD_TAG=${BUILD_NUMBER}
 
                 for svc in product-service cart-service order-service user-service api-gateway; do
                   docker build -f services/$svc/Dockerfile -t $svc:$BUILD_TAG .
@@ -58,14 +61,16 @@ pipeline {
                   docker push $ECR_REGISTRY/$ECR_PREFIX/$svc:$BUILD_TAG
                   docker push $ECR_REGISTRY/$ECR_PREFIX/$svc:latest
                 done
-                '''
+                    '''
+                }
             }
         }
 
         stage('Deploy to EKS') {
             steps {
-                sh '''
-                aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                    sh '''
+                    aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
 
                 kubectl rollout restart deployment product-service cart-service order-service user-service api-gateway -n $K8S_NAMESPACE
 
@@ -73,8 +78,9 @@ pipeline {
                 kubectl rollout status deployment/cart-service -n $K8S_NAMESPACE
                 kubectl rollout status deployment/order-service -n $K8S_NAMESPACE
                 kubectl rollout status deployment/user-service -n $K8S_NAMESPACE
-                kubectl rollout status deployment/api-gateway -n $K8S_NAMESPACE
-                '''
+                    kubectl rollout status deployment/api-gateway -n $K8S_NAMESPACE
+                    '''
+                }
             }
         }
 
