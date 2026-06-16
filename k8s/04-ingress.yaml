@@ -1,0 +1,60 @@
+# ════════════════════════════════════════════════════════════
+# AWS ALB Ingress — Path-based routing
+# Requires: AWS Load Balancer Controller installed on EKS
+#
+# Install it once after cluster is up:
+#   helm repo add eks https://aws.github.io/eks-charts
+#   helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+#     -n kube-system \
+#     --set clusterName=abhi-ejaz-cluster \
+#     --set serviceAccount.create=true
+#
+# After applying, get public IP/hostname:
+#   kubectl get ingress -n abhi-ejaz
+# ════════════════════════════════════════════════════════════
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ae-ingress
+  namespace: abhi-ejaz
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "30"
+    alb.ingress.kubernetes.io/success-codes: "200-399"
+spec:
+  rules:
+  - http:
+      paths:
+
+      # ── API routes → api-gateway → microservices ───────────
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-gateway
+            port:
+              number: 80
+
+      # ── Health endpoint ────────────────────────────────────
+      - path: /health
+        pathType: Exact
+        backend:
+          service:
+            name: api-gateway
+            port:
+              number: 80
+
+      # ── All page routes → frontend (JS router handles them) ─
+      # /clothes, /electronics, /cart, /orders, /user, /auth
+      # frontend's nginx serves index.html for all → JS router takes over
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80

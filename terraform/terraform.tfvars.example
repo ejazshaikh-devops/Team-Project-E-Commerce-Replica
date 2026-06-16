@@ -1,0 +1,13 @@
+# Copy to terraform.tfvars and fill in values
+# NEVER commit terraform.tfvars to git
+
+region             = "ap-south-1"
+project            = "abhi-ejaz"
+env                = "prod"
+db_username        = "abhi_ejaz"
+db_password        = "YourStrongPassword@2024"   # change this
+db_name            = "abhi_ejaz_shop"
+node_instance_type = "t3.medium"
+node_min           = 1
+node_max           = 5
+node_desired       = 2

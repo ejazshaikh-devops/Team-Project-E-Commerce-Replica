@@ -1,0 +1,200 @@
+version: '3.9'
+
+# ── Abhi+Ejaz Shop — Local Dev Docker Compose ─────────────
+# Usage: docker-compose up --build
+# Frontend: http://localhost
+# API:      http://localhost/api
+# MariaDB:  localhost:3306
+
+networks:
+  abhi-ejaz-net:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+  redis_data:
+
+x-node-env: &node-env
+  DB_HOST:     db
+  DB_PORT:     "3306"
+  DB_USER:     abhi_ejaz
+  DB_PASSWORD: AbhiEjaz@Shop2024
+  DB_NAME:     abhi_ejaz_shop
+  NODE_ENV:    development
+
+services:
+
+  # ── MariaDB ──────────────────────────────────────────────
+  db:
+    image: mariadb:11.2
+    container_name: ae-mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: RootPass@2024
+      MYSQL_DATABASE:      abhi_ejaz_shop
+      MYSQL_USER:          abhi_ejaz
+      MYSQL_PASSWORD:      AbhiEjaz@Shop2024
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./services/db-init/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - abhi-ejaz-net
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ── Redis (cart sessions) ─────────────────────────────────
+  redis:
+    image: redis:7.2-alpine
+    container_name: ae-redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    networks:
+      - abhi-ejaz-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Product Service ───────────────────────────────────────
+  product-service:
+    build:
+      context: ./services
+      dockerfile: product-service/Dockerfile
+    container_name: ae-product
+    restart: unless-stopped
+    environment:
+      <<: *node-env
+      PORT: "3001"
+    networks:
+      - abhi-ejaz-net
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Cart Service ──────────────────────────────────────────
+  cart-service:
+    build:
+      context: ./services
+      dockerfile: cart-service/Dockerfile
+    container_name: ae-cart
+    restart: unless-stopped
+    environment:
+      <<: *node-env
+      PORT: "3002"
+    networks:
+      - abhi-ejaz-net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Order Service ─────────────────────────────────────────
+  order-service:
+    build:
+      context: ./services
+      dockerfile: order-service/Dockerfile
+    container_name: ae-order
+    restart: unless-stopped
+    environment:
+      <<: *node-env
+      PORT:                "3003"
+      PRODUCT_SERVICE_URL: http://product-service:3001
+      CART_SERVICE_URL:    http://cart-service:3002
+    networks:
+      - abhi-ejaz-net
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── User Service ──────────────────────────────────────────
+  user-service:
+    build:
+      context: ./services
+      dockerfile: user-service/Dockerfile
+    container_name: ae-user
+    restart: unless-stopped
+    environment:
+      <<: *node-env
+      PORT:       "3004"
+      JWT_SECRET: AbhiEjazJWT@SuperSecret2024
+    networks:
+      - abhi-ejaz-net
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Frontend Service ──────────────────────────────────────
+  frontend-service:
+    build:
+      context: ./services/frontend
+    container_name: ae-frontend
+    restart: unless-stopped
+    networks:
+      - abhi-ejaz-net
+    depends_on:
+      - product-service
+      - cart-service
+      - order-service
+      - user-service
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ── API Gateway ───────────────────────────────────────────
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+    container_name: ae-gateway
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - abhi-ejaz-net
+    depends_on:
+      product-service:
+        condition: service_healthy
+      cart-service:
+        condition: service_healthy
+      order-service:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+      frontend-service:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
