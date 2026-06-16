@@ -10,11 +10,11 @@
 | Phase | Status | Description |
 |-------|--------|-------------|
 | **Phase 1** | ✅ Done | All 5 backend microservices + MariaDB schema + Docker Compose |
-| **Phase 2** | 🔜 Next | Full frontend (React/HTML) — all pages with real product UI |
-| **Phase 3** | 🔜 | Production Dockerfiles + ECR push scripts |
-| **Phase 4** | 🔜 | Terraform — AWS VPC + EKS + RDS MariaDB (fully automated) |
-| **Phase 5** | 🔜 | Kubernetes manifests — Ingress, HPA, Secrets, ConfigMaps |
-| **Phase 6** | 🔜 | GitHub Actions CI/CD — push = auto deploy |
+| **Phase 2** | ✅ Done | Full frontend (React/HTML) — all pages with real product UI |
+| **Phase 3** | ✅ Done | Production Dockerfiles + ECR push scripts |
+| **Phase 4** | ✅ Done | Terraform — AWS VPC + EKS + RDS MariaDB (fully automated) |
+| **Phase 5** | ✅ Done | Kubernetes manifests — Ingress, HPA, Secrets, ConfigMaps |
+| **Phase 6** | ✅ Done | GitHub Actions CI/CD — push = auto deploy |
 
 ---
 
