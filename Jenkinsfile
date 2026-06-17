@@ -5,11 +5,11 @@ pipeline {
         AWS_REGION = "ap-south-1"
         AWS_ACCOUNT_ID = "262252231763"
         ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        ECR_PREFIX = "abhi-ejaz"
-        K8S_NAMESPACE = "abhi-ejaz"
         CLUSTER_NAME = "abhi-ejaz-cluster"
+        K8S_NAMESPACE = "abhi-ejaz"
 
         SONAR_HOST_URL = "http://localhost:9000"
+
         ARGOCD_SERVER = "localhost:8081"
         ARGOCD_APP = "abhi-ejaz-shop"
     }
@@ -26,12 +26,22 @@ pipeline {
                 withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                     sh '''
                     sonar-scanner \
-                      -Dsonar.projectKey=shopsphere \
-                      -Dsonar.projectName=ShopSphere \
-                      -Dsonar.sources=. \
-                      -Dsonar.exclusions=**/node_modules/**,**/.git/**,**/terraform/.terraform/** \
-                      -Dsonar.host.url=$SONAR_HOST_URL \
-                      -Dsonar.token=$SONAR_TOKEN
+                    -Dsonar.projectKey=shopsphere \
+                    -Dsonar.projectName=ShopSphere \
+                    -Dsonar.sources=services \
+                    -Dsonar.exclusions=**/node_modules/**,**/.git/** \
+                    -Dsonar.host.url=$SONAR_HOST_URL \
+                    -Dsonar.token=$SONAR_TOKEN
+                    '''
+                }
+            }
+        }
+
+        stage('AWS Identity Check') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                    sh '''
+                    aws sts get-caller-identity
                     '''
                 }
             }
@@ -48,37 +58,32 @@ pipeline {
             }
         }
 
-        stage('Build and Push Images') {
+        stage('Deploy to EKS') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
                     sh '''
-                    BUILD_TAG=${BUILD_NUMBER}
+                    aws eks update-kubeconfig \
+                    --region $AWS_REGION \
+                    --name $CLUSTER_NAME
 
-                for svc in product-service cart-service order-service user-service api-gateway; do
-                  docker build -f services/$svc/Dockerfile -t $svc:$BUILD_TAG .
-                  docker tag $svc:$BUILD_TAG $ECR_REGISTRY/$ECR_PREFIX/$svc:$BUILD_TAG
-                  docker tag $svc:$BUILD_TAG $ECR_REGISTRY/$ECR_PREFIX/$svc:latest
-                  docker push $ECR_REGISTRY/$ECR_PREFIX/$svc:$BUILD_TAG
-                  docker push $ECR_REGISTRY/$ECR_PREFIX/$svc:latest
-                done
+                    kubectl get nodes
+                    kubectl get pods -n $K8S_NAMESPACE
                     '''
                 }
             }
         }
 
-        stage('Deploy to EKS') {
+        stage('ArgoCD Login') {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                withCredentials([
+                    string(credentialsId: 'argocd-username', variable: 'ARGO_USER'),
+                    string(credentialsId: 'argocd-password', variable: 'ARGO_PASS')
+                ]) {
                     sh '''
-                    aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
-
-                kubectl rollout restart deployment product-service cart-service order-service user-service api-gateway -n $K8S_NAMESPACE
-
-                kubectl rollout status deployment/product-service -n $K8S_NAMESPACE
-                kubectl rollout status deployment/cart-service -n $K8S_NAMESPACE
-                kubectl rollout status deployment/order-service -n $K8S_NAMESPACE
-                kubectl rollout status deployment/user-service -n $K8S_NAMESPACE
-                    kubectl rollout status deployment/api-gateway -n $K8S_NAMESPACE
+                    argocd login $ARGOCD_SERVER \
+                    --username $ARGO_USER \
+                    --password $ARGO_PASS \
+                    --insecure
                     '''
                 }
             }
@@ -86,28 +91,9 @@ pipeline {
 
         stage('ArgoCD Sync') {
             steps {
-                withCredentials([
-                    string(credentialsId: 'argocd-username', variable: 'ARGOCD_USERNAME'),
-                    string(credentialsId: 'argocd-password', variable: 'ARGOCD_PASSWORD')
-                ]) {
-                    sh '''
-                    argocd login $ARGOCD_SERVER \
-                      --username $ARGOCD_USERNAME \
-                      --password $ARGOCD_PASSWORD \
-                      --insecure
-
-                    argocd app sync $ARGOCD_APP
-                    argocd app wait $ARGOCD_APP --health --timeout 300
-                    '''
-                }
-            }
-        }
-
-        stage('Verify') {
-            steps {
                 sh '''
-                kubectl get pods -n $K8S_NAMESPACE
-                kubectl get ingress -n $K8S_NAMESPACE
+                argocd app sync $ARGOCD_APP
+                argocd app wait $ARGOCD_APP --health --timeout 300
                 '''
             }
         }
@@ -115,10 +101,11 @@ pipeline {
 
     post {
         success {
-            echo "ShopSphere CI/CD with SonarQube and ArgoCD completed successfully."
+            echo 'Pipeline completed successfully'
         }
+
         failure {
-            echo "Pipeline failed. Check console output."
+            echo 'Pipeline failed'
         }
     }
 }
