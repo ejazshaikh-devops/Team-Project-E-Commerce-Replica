@@ -1,111 +1,106 @@
 pipeline {
-    agent any
+agent any
 
-    environment {
-        AWS_REGION = "ap-south-1"
-        AWS_ACCOUNT_ID = "262252231763"
-        ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        CLUSTER_NAME = "abhi-ejaz-cluster"
-        K8S_NAMESPACE = "abhi-ejaz"
+```
+environment {
+    AWS_REGION = "ap-south-1"
+    AWS_ACCOUNT_ID = "262252231763"
+    ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
 
-        SONAR_HOST_URL = "http://localhost:9000"
+    CLUSTER_NAME = "abhi-ejaz-cluster"
+    K8S_NAMESPACE = "abhi-ejaz"
 
-        ARGOCD_SERVER = "localhost:8081"
-        ARGOCD_APP = "abhi-ejaz-shop"
+    SONAR_HOST_URL = "http://localhost:9000"
+}
+
+stages {
+
+    stage('Checkout') {
+        steps {
+            checkout scm
+        }
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('SonarQube Scan') {
-            steps {
-                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                    sh '''
-                    sonar-scanner \
-                    -Dsonar.projectKey=shopsphere \
-                    -Dsonar.projectName=ShopSphere \
-                    -Dsonar.sources=services \
-                    -Dsonar.exclusions=**/node_modules/**,**/.git/** \
-                    -Dsonar.host.url=$SONAR_HOST_URL \
-                    -Dsonar.token=$SONAR_TOKEN
-                    '''
-                }
-            }
-        }
-
-        stage('AWS Identity Check') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
-                    sh '''
-                    aws sts get-caller-identity
-                    '''
-                }
-            }
-        }
-
-        stage('ECR Login') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
-                    sh '''
-                    aws ecr get-login-password --region $AWS_REGION | \
-                    docker login --username AWS --password-stdin $ECR_REGISTRY
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy to EKS') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
-                    sh '''
-                    aws eks update-kubeconfig \
-                    --region $AWS_REGION \
-                    --name $CLUSTER_NAME
-
-                    kubectl get nodes
-                    kubectl get pods -n $K8S_NAMESPACE
-                    '''
-                }
-            }
-        }
-
-        stage('ArgoCD Login') {
-            steps {
-                withCredentials([
-                    string(credentialsId: 'argocd-username', variable: 'ARGO_USER'),
-                    string(credentialsId: 'argocd-password', variable: 'ARGO_PASS')
-                ]) {
-                    sh '''
-                    argocd login $ARGOCD_SERVER \
-                    --username $ARGO_USER \
-                    --password $ARGO_PASS \
-                    --insecure
-                    '''
-                }
-            }
-        }
-
-        stage('ArgoCD Sync') {
-            steps {
+    stage('SonarQube Scan') {
+        steps {
+            withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                 sh '''
-                argocd app sync $ARGOCD_APP
-                argocd app wait $ARGOCD_APP --health --timeout 300
+                sonar-scanner \
+                -Dsonar.projectKey=shopsphere \
+                -Dsonar.projectName=ShopSphere \
+                -Dsonar.sources=services \
+                -Dsonar.exclusions=**/node_modules/**,**/.git/** \
+                -Dsonar.host.url=$SONAR_HOST_URL \
+                -Dsonar.token=$SONAR_TOKEN
                 '''
             }
         }
     }
 
-    post {
-        success {
-            echo 'Pipeline completed successfully'
-        }
-
-        failure {
-            echo 'Pipeline failed'
+    stage('AWS Identity Check') {
+        steps {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                sh '''
+                aws sts get-caller-identity
+                '''
+            }
         }
     }
+
+    stage('ECR Login') {
+        steps {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                sh '''
+                aws ecr get-login-password --region $AWS_REGION | \
+                docker login --username AWS --password-stdin $ECR_REGISTRY
+                '''
+            }
+        }
+    }
+
+    stage('Deploy to EKS') {
+        steps {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                sh '''
+                aws eks update-kubeconfig \
+                --region $AWS_REGION \
+                --name $CLUSTER_NAME
+
+                kubectl get nodes
+                kubectl get pods -n $K8S_NAMESPACE
+                '''
+            }
+        }
+    }
+
+    stage('ArgoCD Login and Sync') {
+        steps {
+            withCredentials([
+                string(credentialsId: 'argocd-password', variable: 'ARGO_PASS')
+            ]) {
+                sh '''
+                argocd login localhost:8081 \
+                --username admin \
+                --password "$ARGO_PASS" \
+                --insecure
+
+                argocd app sync abhi-ejaz-shop
+                argocd app wait abhi-ejaz-shop --health --timeout 300
+                '''
+            }
+        }
+    }
+}
+
+post {
+    success {
+        echo 'Pipeline completed successfully'
+    }
+
+    failure {
+        echo 'Pipeline failed'
+    }
+}
+```
+
 }
