@@ -22,8 +22,8 @@ pipeline {
                 withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                     sh '''
                     sonar-scanner \
-                    -Dsonar.projectKey=shopsphere \
-                    -Dsonar.projectName=ShopSphere \
+                    -Dsonar.projectKey=abhiejaz-shop \
+                    -Dsonar.projectName=abhiejaz-shop \
                     -Dsonar.sources=services \
                     -Dsonar.exclusions=**/node_modules/**,**/.git/** \
                     -Dsonar.host.url=$SONAR_HOST_URL \
