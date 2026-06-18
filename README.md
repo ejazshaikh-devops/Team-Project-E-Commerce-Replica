@@ -7,15 +7,15 @@
 
 ## 📋 Project Phases
 
-| Phase | Status | Description |
-|-------|--------|-------------|
+|    Phase    |  Status |                           Description                          |
+|-------------|---------|----------------------------------------------------------------|
 | **Phase 1** | ✅ Done | All 5 backend microservices + MariaDB schema + Docker Compose |
 | **Phase 2** | ✅ Done | Full frontend (React/HTML) — all pages with real product UI |
 | **Phase 3** | ✅ Done | Production Dockerfiles + ECR push scripts |
 | **Phase 4** | ✅ Done | Terraform — AWS VPC + EKS + RDS MariaDB (fully automated) |
 | **Phase 5** | ✅ Done | Kubernetes manifests — Ingress, HPA, Secrets, ConfigMaps |
 | **Phase 6** | ✅ Done | GitHub Actions CI/CD — push = auto deploy |
-
+| **Phase 7** | ✅ Done | Monitoring with DataDog & for testing Grafana As well |
 ---
 
 ## 🏗 Architecture
@@ -190,6 +190,51 @@ Once deployed to AWS EKS, all routes accessible via public IP:
 | Monitoring | Prometheus + Grafana (Phase 6) |
 
 ---
+# Sonar webhook test
 
-*Built with ❤️ by Abhi+Ejaz*
-# sonar webhook test
+# Screenshots of WebPage
+
+<img width="1600" height="900" alt="a6689bb5-cdd9-4990-b5b8-bb1e7547e4e5" src="https://github.com/user-attachments/assets/2888a51d-73ba-4ec3-b609-eb2dbe19640c" />
+
+<img width="1600" height="900" alt="a1d569b3-ecf5-406a-830b-7d5da3dda5bc" src="https://github.com/user-attachments/assets/e2675b95-fe21-47f7-a751-5a7eb74d97bd" />
+
+<img width="1600" height="900" alt="293891b3-1dfd-46ae-a39f-81da78bee5f2" src="https://github.com/user-attachments/assets/44ddd9a0-8fca-4d9e-bfec-cb641f959e62" />
+
+<img width="1600" height="900" alt="42f1ff93-af0a-4b83-831a-337ced1e2170" src="https://github.com/user-attachments/assets/ba0d572f-7e13-4d4b-8131-61723b4813b7" />
+
+<img width="1600" height="900" alt="1bf68974-2464-4ff4-aab6-9f9d2ab80307" src="https://github.com/user-attachments/assets/d1243f39-9c03-420b-8c64-ef64f8c6db9d" />
+
+# Screenshots of CI/CD Pipeline
+
+<img width="1600" height="900" alt="2915e16e-753f-48cc-8c05-12a88cb831e7" src="https://github.com/user-attachments/assets/6db3d557-fec1-4efa-829d-6d23df86af8b" />
+
+<img width="1600" height="900" alt="31b1d0f5-f194-41f1-83ff-e6fab12c0096" src="https://github.com/user-attachments/assets/a7428567-5c83-4e6e-b6b3-2dfad116d5e1" />
+
+# Screenshots of Monitoring Tools
+
+<img width="1600" height="900" alt="7b17c769-0d7a-42b0-9267-1838781b1096" src="https://github.com/user-attachments/assets/d57bc685-313f-46a8-8516-da978a8afcb1" />
+
+<img width="1600" height="900" alt="38a10728-fb66-4955-94b1-0129aee35a8b" src="https://github.com/user-attachments/assets/96b01eeb-e3b4-4dbf-93b5-f732648e45e6" />
+
+<img width="1600" height="900" alt="57379378-e66b-4c88-a3c2-227878a63687" src="https://github.com/user-attachments/assets/9eab0c01-7ecc-47c7-a3e9-bd77362c9d57" />
+
+<img width="1600" height="900" alt="b9d58634-b31a-44b8-bbe4-246a7d3c13cd" src="https://github.com/user-attachments/assets/db065abc-f31f-4539-958b-a72b0b683e1e" />
+
+<img width="1600" height="900" alt="bdd44a34-8754-4313-b41e-cf2ef656c0fb" src="https://github.com/user-attachments/assets/8782564b-dccb-4a60-9597-cf41a8ca9a91" />
+
+<img width="1600" height="900" alt="d6c161f2-e439-4fd4-a454-db08feb48813" src="https://github.com/user-attachments/assets/5447b0f9-a276-4e44-86b5-95a18f6fa6b6" />
+
+<img width="1600" height="900" alt="eca19858-dec5-443c-974e-3a7918109bd7" src="https://github.com/user-attachments/assets/47ca74b0-002e-4b73-94b6-b59e9e39d092" />
+
+<img width="1600" height="900" alt="ee8df97b-2b76-45d5-abec-5418e80e61cb" src="https://github.com/user-attachments/assets/b50fa3f3-3908-426b-bcb3-cb353cd2e64b" />
+
+<img width="1600" height="900" alt="f33bf705-8c14-4885-80ae-a7ace2e21f92" src="https://github.com/user-attachments/assets/a29bb509-6a0c-4010-8afb-5c0578cc6dbf" />
+
+<img width="1600" height="900" alt="feed0b0c-a758-4e57-854c-04291ca04924" src="https://github.com/user-attachments/assets/17cde113-52e1-42e5-af7c-bbb50e719bce" />
+
+
+
+# Built with ❤️ by Abhi+Ejaz
+
+
+
