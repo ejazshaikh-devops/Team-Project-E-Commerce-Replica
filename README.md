@@ -504,7 +504,7 @@ Once deployed to AWS EKS, all routes accessible via public IP:
 
 <img width="1600" height="900" alt="1bf68974-2464-4ff4-aab6-9f9d2ab80307" src="https://github.com/user-attachments/assets/d1243f39-9c03-420b-8c64-ef64f8c6db9d" />
 
-# Screenshots of CI/CD Pipeline
+# Screenshots of Automation
 
 <img width="1600" height="900" alt="2915e16e-753f-48cc-8c05-12a88cb831e7" src="https://github.com/user-attachments/assets/6db3d557-fec1-4efa-829d-6d23df86af8b" />
 
