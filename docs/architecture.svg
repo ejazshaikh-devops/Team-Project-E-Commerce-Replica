@@ -1,0 +1,411 @@
+<svg viewBox="0 0 1700 1180" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+<defs>
+  <radialGradient id="bgGrad" cx="50%" cy="0%" r="120%">
+    <stop offset="0%" stop-color="#0e1630"/>
+    <stop offset="55%" stop-color="#080c1c"/>
+    <stop offset="100%" stop-color="#04050c"/>
+  </radialGradient>
+
+  <linearGradient id="glassFill" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+  </linearGradient>
+
+  <linearGradient id="panelFill" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.015"/>
+  </linearGradient>
+
+  <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="6" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+
+  <filter id="bigBlur" x="-100%" y="-100%" width="300%" height="300%">
+    <feGaussianBlur stdDeviation="40"/>
+  </filter>
+
+  <filter id="dotGlow" x="-300%" y="-300%" width="700%" height="700%">
+    <feGaussianBlur stdDeviation="3.2"/>
+  </filter>
+
+  <style>
+    .card-title{fill:#f8fafc;font-size:17px;font-weight:600;}
+    .card-sub{fill:#93a3bb;font-size:12px;}
+    .card-sub2{fill:#7484a0;font-size:10.5px;}
+    .section-title{fill:#e6ebf5;font-size:21px;font-weight:700;letter-spacing:.3px;}
+    .section-tag{fill:#7d8bab;font-size:12px;font-weight:600;letter-spacing:1.2px;}
+    .badge-text{fill:#0b1020;font-size:10.5px;font-weight:700;}
+    .legend-text{fill:#8a97b3;font-size:12px;}
+
+    .glass{fill:url(#glassFill);stroke:#ffffff;stroke-opacity:.16;stroke-width:1.2;}
+    .glass-hi{fill:none;stroke:#ffffff;stroke-opacity:.30;stroke-width:1.4;}
+    .panel{fill:url(#panelFill);stroke:#ffffff;stroke-opacity:.10;stroke-width:1.2;}
+
+    .flow{stroke-dasharray:2 9;stroke-linecap:round;animation:dash 1.6s linear infinite;}
+    @keyframes dash{to{stroke-dashoffset:-110;}}
+
+    .twinkle{animation:tw 4s ease-in-out infinite;}
+    @keyframes tw{0%,100%{opacity:.15;}50%{opacity:.65;}}
+
+    .pulse{animation:pulse 3.6s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{opacity:.55;}50%{opacity:1;}}
+
+    .blob{animation:blob 9s ease-in-out infinite;}
+    @keyframes blob{0%,100%{opacity:.10;transform:scale(1);}50%{opacity:.20;transform:scale(1.12);}}
+  </style>
+</defs>
+
+<rect x="0" y="0" width="1700" height="1180" fill="url(#bgGrad)"/>
+
+<!-- ambient glow blobs -->
+<circle cx="260" cy="120" r="220" fill="#22d3ee" opacity="0.13" filter="url(#bigBlur)" class="blob" style="animation-delay:-1s"/>
+<circle cx="1450" cy="180" r="240" fill="#a855f7" opacity="0.13" filter="url(#bigBlur)" class="blob" style="animation-delay:-4s"/>
+<circle cx="850" cy="650" r="320" fill="#3b82f6" opacity="0.11" filter="url(#bigBlur)" class="blob" style="animation-delay:-2s"/>
+<circle cx="200" cy="950" r="220" fill="#fbbf24" opacity="0.10" filter="url(#bigBlur)" class="blob" style="animation-delay:-6s"/>
+<circle cx="1550" cy="950" r="200" fill="#34d399" opacity="0.11" filter="url(#bigBlur)" class="blob" style="animation-delay:-3s"/>
+
+<!-- scattered glow particles -->
+<g fill="#bfe9ff" opacity="0.4">
+  <circle cx="95" cy="220" r="2" class="twinkle" style="animation-delay:-0.2s"/>
+  <circle cx="180" cy="60" r="1.6" class="twinkle" style="animation-delay:-1.4s"/>
+  <circle cx="340" cy="930" r="2.2" class="twinkle" style="animation-delay:-2.1s"/>
+  <circle cx="520" cy="190" r="1.4" class="twinkle" style="animation-delay:-0.7s"/>
+  <circle cx="980" cy="80" r="2" class="twinkle" style="animation-delay:-3.2s"/>
+  <circle cx="1230" cy="990" r="1.8" class="twinkle" style="animation-delay:-1.9s"/>
+  <circle cx="1390" cy="300" r="1.6" class="twinkle" style="animation-delay:-2.6s"/>
+  <circle cx="1610" cy="700" r="2.2" class="twinkle" style="animation-delay:-0.4s"/>
+  <circle cx="60" cy="650" r="1.8" class="twinkle" style="animation-delay:-3.6s"/>
+  <circle cx="1640" cy="120" r="1.6" class="twinkle" style="animation-delay:-1.1s"/>
+  <circle cx="730" cy="1080" r="2" class="twinkle" style="animation-delay:-2.4s"/>
+  <circle cx="1500" cy="1070" r="1.6" class="twinkle" style="animation-delay:-0.9s"/>
+  <circle cx="40" cy="1000" r="1.5" class="twinkle" style="animation-delay:-3.0s"/>
+  <circle cx="1660" cy="1000" r="1.8" class="twinkle" style="animation-delay:-1.6s"/>
+</g>
+
+<!-- ============ TITLE ============ -->
+<text x="60" y="34" class="section-tag">ABHI+EJAZ SHOP — END-TO-END ARCHITECTURE</text>
+
+<!-- ============ CI/CD ROW ============ -->
+<text x="60" y="68" class="section-title">🔁 CI/CD Pipeline</text>
+
+<!-- connector paths between CI/CD cards (drawn first, under cards) -->
+<g stroke="#5eead4" stroke-opacity="0.55" stroke-width="2" fill="none">
+  <path id="p-dev-gh"  class="flow" d="M320,140 H344"/>
+  <path id="p-gh-jk"   class="flow" d="M554,140 H578"/>
+  <path id="p-jk-sq"   class="flow" d="M788,140 H812"/>
+  <path id="p-sq-ecr"  class="flow" d="M1022,140 H1046"/>
+  <path id="p-ecr-argo" class="flow" d="M1256,140 H1280"/>
+</g>
+<!-- arrowheads -->
+<g fill="#5eead4">
+  <path d="M338,135 L348,140 L338,145 Z"/>
+  <path d="M572,135 L582,140 L572,145 Z"/>
+  <path d="M806,135 L816,140 L806,145 Z"/>
+  <path d="M1040,135 L1050,140 L1040,145 Z"/>
+  <path d="M1274,135 L1284,140 L1274,145 Z"/>
+</g>
+<!-- traveling particles along CI/CD chain -->
+<g fill="#ecfeff" filter="url(#dotGlow)">
+  <circle r="3.2"><animateMotion dur="6s" repeatCount="indefinite" begin="0s"><mpath href="#p-dev-gh"/></animateMotion></circle>
+  <circle r="3.2"><animateMotion dur="6s" repeatCount="indefinite" begin="1.2s"><mpath href="#p-gh-jk"/></animateMotion></circle>
+  <circle r="3.2"><animateMotion dur="6s" repeatCount="indefinite" begin="2.4s"><mpath href="#p-jk-sq"/></animateMotion></circle>
+  <circle r="3.2"><animateMotion dur="6s" repeatCount="indefinite" begin="3.6s"><mpath href="#p-sq-ecr"/></animateMotion></circle>
+  <circle r="3.2"><animateMotion dur="6s" repeatCount="indefinite" begin="4.8s"><mpath href="#p-ecr-argo"/></animateMotion></circle>
+</g>
+
+<!-- Card 1: Developer -->
+<g>
+  <rect x="110" y="90" width="210" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M110,90 h210" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <g transform="translate(132,110)" stroke="#5eead4" stroke-width="2.2" fill="none" stroke-linecap="round">
+    <path d="M0,8 L-7,16 L0,24"/>
+    <path d="M16,8 L23,16 L16,24"/>
+    <path d="M12,4 L8,28"/>
+  </g>
+  <text x="132" y="158" class="card-title">Developer</text>
+  <text x="132" y="176" class="card-sub">git push origin main</text>
+</g>
+
+<!-- Card 2: GitHub -->
+<g>
+  <rect x="344" y="90" width="210" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M344,90 h210" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <g transform="translate(376,116)" fill="none" stroke="#5eead4" stroke-width="2.2" stroke-linecap="round">
+    <circle cx="0" cy="0" r="4" fill="#5eead4"/>
+    <circle cx="0" cy="20" r="4" fill="#5eead4"/>
+    <circle cx="16" cy="10" r="4" fill="#5eead4"/>
+    <path d="M0,4 V16"/>
+    <path d="M0,10 H12"/>
+  </g>
+  <text x="366" y="158" class="card-title">GitHub</text>
+  <text x="366" y="176" class="card-sub">Source · Jenkinsfile</text>
+</g>
+
+<!-- Card 3: Jenkins -->
+<g>
+  <rect x="578" y="90" width="210" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M578,90 h210" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <g transform="translate(610,116)" fill="none" stroke="#5eead4" stroke-width="2.2">
+    <circle cx="0" cy="8" r="9"/>
+    <path d="M0,-3 V-8 M0,19 V24 M-9,8 H-14 M9,8 H14 M-6.4,1.4 L-9.9,-2.1 M6.4,1.4 L9.9,-2.1 M-6.4,14.6 L-9.9,18.1 M6.4,14.6 L9.9,18.1" stroke-linecap="round"/>
+  </g>
+  <text x="600" y="158" class="card-title">Jenkins</text>
+  <text x="600" y="176" class="card-sub">Build + Test</text>
+</g>
+
+<!-- Card 4: SonarQube -->
+<g>
+  <rect x="812" y="90" width="210" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M812,90 h210" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <g transform="translate(840,112)" fill="none" stroke="#5eead4" stroke-width="2.2" stroke-linecap="round">
+    <circle cx="8" cy="8" r="8"/>
+    <path d="M14,14 L22,22"/>
+    <path d="M4.5,8 L7,10.5 L12,4.5"/>
+  </g>
+  <text x="834" y="158" class="card-title">SonarQube</text>
+  <text x="834" y="176" class="card-sub">Static code scan</text>
+</g>
+
+<!-- Card 5: Amazon ECR -->
+<g>
+  <rect x="1046" y="90" width="210" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M1046,90 h210" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <g transform="translate(1074,110)" fill="none" stroke="#fbbf24" stroke-width="2">
+    <rect x="0" y="0" width="22" height="8" rx="1.5"/>
+    <rect x="0" y="11" width="22" height="8" rx="1.5"/>
+    <rect x="0" y="22" width="22" height="8" rx="1.5"/>
+  </g>
+  <text x="1068" y="158" class="card-title">Amazon ECR</text>
+  <text x="1068" y="176" class="card-sub">Image registry</text>
+</g>
+
+<!-- Card 6: ArgoCD -->
+<g>
+  <rect x="1280" y="90" width="210" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M1280,90 h210" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <g transform="translate(1308,116)" fill="none" stroke="#5eead4" stroke-width="2.2" stroke-linecap="round">
+    <path d="M0,8 a8,8 0 1 1 3,6.2"/>
+    <path d="M2,11 L3,16.5 L8.5,15.5"/>
+  </g>
+  <text x="1302" y="158" class="card-title">ArgoCD</text>
+  <text x="1302" y="176" class="card-sub">GitOps sync</text>
+</g>
+
+<!-- ============ AWS PANEL ============ -->
+<rect x="60" y="230" width="1440" height="890" rx="26" class="panel"/>
+<path d="M60,230.6 h1440" stroke="#fbbf24" stroke-opacity=".30" stroke-width="1.4"/>
+<text x="90" y="270" class="section-title">☁ AWS · ap-south-1</text>
+<text x="90" y="292" class="section-tag">PROVISIONED BY TERRAFORM · VPC · 3 AVAILABILITY ZONES</text>
+<g transform="translate(1370,250)" fill="none" stroke="#fbbf24" stroke-opacity=".8" stroke-width="2">
+  <path d="M0,10 h8 M2,5 h6 M4,15 h6" stroke-linecap="round"/>
+</g>
+
+<!-- Internet node -->
+<rect x="630" y="312" width="300" height="50" rx="14" class="glass" filter="url(#softGlow)"/>
+<text x="780" y="342" text-anchor="middle" class="card-title" font-size="15">🌐 Internet · Shoppers</text>
+
+<!-- Internet -> ALB -->
+<path id="p-net-alb" class="flow" d="M780,362 V392" stroke="#94a3b8" stroke-opacity=".6" stroke-width="2" fill="none"/>
+<path d="M775,386 L780,396 L785,386 Z" fill="#94a3b8"/>
+
+<!-- ALB node -->
+<rect x="620" y="392" width="320" height="80" rx="16" class="glass" filter="url(#softGlow)"/>
+<path d="M620,392 h320" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+<g transform="translate(648,414)" fill="none" stroke="#93c5fd" stroke-width="2.2" stroke-linecap="round">
+  <path d="M0,0 H22 L11,18 Z"/>
+</g>
+<text x="678" y="430" class="card-title">ALB / Ingress</text>
+<text x="678" y="448" class="card-sub">path-based routing —</text>
+<text x="678" y="463" class="card-sub2">full rules in "Path-Based Routing" ↓</text>
+
+<!-- ALB -> EKS panel -->
+<g stroke="#93c5fd" stroke-opacity=".6" stroke-width="2" fill="none">
+  <path id="p-alb-fe" class="flow" d="M700,472 C700,510 680,530 650,560"/>
+  <path id="p-alb-gw" class="flow" d="M860,472 C860,510 890,530 910,560"/>
+</g>
+<g fill="#93c5fd">
+  <path d="M644,553 L656,556 L649,565 Z"/>
+  <path d="M903,565 L905,553 L915,560 Z"/>
+</g>
+
+<!-- ============ EKS PANEL ============ -->
+<rect x="140" y="500" width="1280" height="480" rx="22" class="panel"/>
+<path d="M140,500.6 h1280" stroke="#60a5fa" stroke-opacity=".30" stroke-width="1.4"/>
+<text x="166" y="535" class="card-title" font-size="16">☸ EKS Cluster · Kubernetes v1.36</text>
+<text x="166" y="554" class="section-tag">MANAGED NODE GROUP · IRSA · COREDNS · VPC-CNI</text>
+
+<!-- Frontend card -->
+<rect x="540" y="560" width="220" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+<path d="M540,560 h220" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+<g transform="translate(564,580)" fill="none" stroke="#93c5fd" stroke-width="2">
+  <rect x="0" y="0" width="22" height="15" rx="2"/>
+  <path d="M11,15 V20 M5,20 H17" stroke-linecap="round"/>
+</g>
+<text x="564" y="628" class="card-title" font-size="15">Frontend</text>
+<text x="564" y="645" class="card-sub">Nginx · vanilla JS SPA</text>
+<rect x="700" y="567" width="46" height="18" rx="9" fill="#0ea5e9" opacity="0.85"/>
+<text x="723" y="580" text-anchor="middle" class="badge-text">🐳 x2</text>
+
+<!-- API Gateway card -->
+<rect x="800" y="560" width="220" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+<path d="M800,560 h220" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+<g transform="translate(824,580)" fill="none" stroke="#93c5fd" stroke-width="2">
+  <path d="M0,0 V20 M16,0 V20 M0,10 H16" stroke-linecap="round"/>
+</g>
+<text x="824" y="628" class="card-title" font-size="15">API Gateway</text>
+<text x="824" y="645" class="card-sub">Nginx reverse proxy</text>
+<rect x="960" y="567" width="46" height="18" rx="9" fill="#0ea5e9" opacity="0.85"/>
+<text x="983" y="580" text-anchor="middle" class="badge-text">🐳 x2</text>
+
+<!-- Gateway -> 4 services -->
+<g stroke="#38bdf8" stroke-opacity=".7" stroke-width="2" fill="none">
+  <path id="p-gw-prod" d="M870,660 C780,685 540,690 450,700"/>
+  <path id="p-gw-cart" d="M890,660 C830,680 700,690 670,700"/>
+  <path id="p-gw-ord"  d="M930,660 C950,680 900,690 890,700"/>
+  <path id="p-gw-user" d="M950,660 C1040,680 1100,690 1110,700"/>
+</g>
+<g fill="#38bdf8">
+  <path d="M444,693 L456,696 L449,705 Z"/>
+  <path d="M664,693 L676,696 L669,705 Z"/>
+  <path d="M884,693 L896,696 L889,705 Z"/>
+  <path d="M1104,693 L1116,696 L1109,705 Z"/>
+</g>
+
+<!-- Backend service cards -->
+<g>
+  <rect x="360" y="700" width="180" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M360,700 h180" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <rect x="382" y="718" width="20" height="20" rx="4" fill="none" stroke="#86efac" stroke-width="2"/>
+  <text x="382" y="768" class="card-title" font-size="14">Product Svc</text>
+  <text x="382" y="784" class="card-sub">Node.js · :3001</text>
+  <rect x="452" y="708" width="76" height="18" rx="9" fill="#0f172a" stroke="#86efac" stroke-opacity=".6"/>
+  <text x="490" y="721" text-anchor="middle" class="legend-text" fill="#86efac" font-size="10.5">HPA 2-8</text>
+</g>
+<g>
+  <rect x="580" y="700" width="180" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M580,700 h180" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <rect x="602" y="718" width="20" height="20" rx="4" fill="none" stroke="#86efac" stroke-width="2"/>
+  <text x="602" y="768" class="card-title" font-size="14">Cart Svc</text>
+  <text x="602" y="784" class="card-sub">Node.js · :3002</text>
+  <rect x="672" y="708" width="76" height="18" rx="9" fill="#0f172a" stroke="#86efac" stroke-opacity=".6"/>
+  <text x="710" y="721" text-anchor="middle" class="legend-text" fill="#86efac" font-size="10.5">HPA 2-8</text>
+</g>
+<g>
+  <rect x="800" y="700" width="180" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M800,700 h180" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <rect x="822" y="718" width="20" height="20" rx="4" fill="none" stroke="#86efac" stroke-width="2"/>
+  <text x="822" y="768" class="card-title" font-size="14">Order Svc</text>
+  <text x="822" y="784" class="card-sub">Node.js · :3003</text>
+  <rect x="892" y="708" width="76" height="18" rx="9" fill="#0f172a" stroke="#86efac" stroke-opacity=".6"/>
+  <text x="930" y="721" text-anchor="middle" class="legend-text" fill="#86efac" font-size="10.5">HPA 2-6</text>
+</g>
+<g>
+  <rect x="1020" y="700" width="180" height="100" rx="16" class="glass" filter="url(#softGlow)"/>
+  <path d="M1020,700 h180" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+  <rect x="1042" y="718" width="20" height="20" rx="4" fill="none" stroke="#86efac" stroke-width="2"/>
+  <text x="1042" y="768" class="card-title" font-size="14">User Svc</text>
+  <text x="1042" y="784" class="card-sub">Node.js · :3004</text>
+  <rect x="1112" y="708" width="76" height="18" rx="9" fill="#0f172a" stroke="#86efac" stroke-opacity=".6"/>
+  <text x="1150" y="721" text-anchor="middle" class="legend-text" fill="#86efac" font-size="10.5">HPA 2-6</text>
+</g>
+
+
+
+<!-- Datadog Agent column -->
+<rect x="1240" y="560" width="180" height="240" rx="18" class="glass" filter="url(#softGlow)"/>
+<path d="M1240,560 h180" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+<circle cx="1330" cy="600" r="14" fill="none" stroke="#d8b4fe" stroke-width="2.2"/>
+<circle cx="1330" cy="600" r="4" fill="#d8b4fe"/>
+<text x="1330" y="650" text-anchor="middle" class="card-title" font-size="15">Datadog</text>
+<text x="1330" y="668" text-anchor="middle" class="card-title" font-size="15">Agent</text>
+<text x="1330" y="690" text-anchor="middle" class="card-sub">DaemonSet</text>
+<text x="1330" y="706" text-anchor="middle" class="card-sub2">APM · RUM · Logs</text>
+
+<!-- Datadog Agent -> services (telemetry, dashed, routed below the row to avoid crossing request-flow lines) -->
+<g stroke="#e879f9" stroke-opacity=".4" stroke-width="1.5" stroke-dasharray="1 10" fill="none">
+  <path d="M1240,790 C1000,870 650,880 450,802"/>
+  <path d="M1240,795 C1050,860 800,870 670,802"/>
+  <path d="M1240,800 C1100,840 950,850 890,802"/>
+  <path d="M1240,775 C1180,800 1150,800 1110,802"/>
+</g>
+<text x="1330" y="722" text-anchor="middle" class="card-sub2" fill="#e879f9" opacity="0.75">+ Frontend &amp; Gateway</text>
+
+<!-- Services -> RDS -->
+<g stroke="#86efac" stroke-opacity=".55" stroke-width="2" class="flow" fill="none">
+  <path id="p-prod-rds" d="M450,800 C460,900 600,960 660,1018"/>
+  <path id="p-cart-rds" d="M670,800 C680,880 720,950 740,1018"/>
+  <path id="p-ord-rds"  d="M890,800 C880,880 840,950 820,1018"/>
+  <path id="p-user-rds" d="M1110,800 C1090,900 900,960 840,1018"/>
+</g>
+
+<!-- ECR -> EKS image pull -->
+<path id="p-ecr-pull" class="flow" d="M1151,190 C1250,300 1380,420 1380,500" stroke="#fbbf24" stroke-opacity=".5" stroke-width="2" fill="none" stroke-dasharray="1 8"/>
+<text x="1230" y="350" class="card-sub2" fill="#fbbf24" opacity="0.8">image pull</text>
+
+<!-- ArgoCD -> EKS sync -->
+<path id="p-argo-sync" class="flow" d="M1385,190 C1300,300 1200,420 1180,500" stroke="#5eead4" stroke-opacity=".5" stroke-width="2" fill="none"/>
+<text x="1290" y="320" class="card-sub2" fill="#5eead4" opacity="0.8">sync</text>
+<g fill="#5eead4"><path d="M1173,492 L1183,494 L1178,503 Z"/></g>
+
+<!-- RDS node -->
+<rect x="580" y="1018" width="400" height="72" rx="16" class="glass" filter="url(#softGlow)"/>
+<path d="M580,1018 h400" stroke="#ffffff" stroke-opacity=".35" stroke-width="1.4"/>
+<g transform="translate(606,1034)" fill="none" stroke="#86efac" stroke-width="2">
+  <path d="M0,4 a14,5 0 1 1 28,0 a14,5 0 1 1 -28,0 v22 a14,5 0 0 0 28,0 v-22"/>
+</g>
+<text x="652" y="1050" class="card-title" font-size="15">Amazon RDS · MariaDB 10.11</text>
+<text x="652" y="1068" class="card-sub">private subnet · db.t3.micro</text>
+
+<!-- traveling particles: ALB row + services->RDS + agent->saas -->
+<g fill="#bfe9ff" filter="url(#dotGlow)">
+  <circle r="3"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#p-alb-fe"/></animateMotion></circle>
+  <circle r="3"><animateMotion dur="3.2s" repeatCount="indefinite" begin="1s"><mpath href="#p-alb-gw"/></animateMotion></circle>
+  <circle r="3"><animateMotion dur="4s" repeatCount="indefinite"><mpath href="#p-prod-rds"/></animateMotion></circle>
+  <circle r="3"><animateMotion dur="4s" repeatCount="indefinite" begin="1s"><mpath href="#p-cart-rds"/></animateMotion></circle>
+  <circle r="3"><animateMotion dur="4s" repeatCount="indefinite" begin="2s"><mpath href="#p-ord-rds"/></animateMotion></circle>
+  <circle r="3"><animateMotion dur="4s" repeatCount="indefinite" begin="3s"><mpath href="#p-user-rds"/></animateMotion></circle>
+</g>
+<g fill="#fde68a" filter="url(#dotGlow)">
+  <circle r="2.6"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#p-ecr-pull"/></animateMotion></circle>
+</g>
+<g fill="#a7f3d0" filter="url(#dotGlow)">
+  <circle r="2.6"><animateMotion dur="5s" repeatCount="indefinite" begin="2s"><mpath href="#p-argo-sync"/></animateMotion></circle>
+</g>
+
+<!-- Datadog SaaS (outside AWS boundary) -->
+<g>
+  <path d="M1560,640 a30,30 0 0 1 0,-60 a36,36 0 0 1 70,-10 a26,26 0 0 1 6,52 Z" transform="translate(0,30)" class="glass" filter="url(#softGlow)" fill="url(#glassFill)" stroke="#ffffff" stroke-opacity=".2"/>
+  <text x="1600" y="680" text-anchor="middle" class="card-title" font-size="14">Datadog SaaS</text>
+  <text x="1600" y="697" text-anchor="middle" class="card-sub2">APM · RUM · Logs</text>
+</g>
+<path id="p-agent-saas" class="flow" d="M1420,665 C1470,665 1500,665 1545,665" stroke="#d8b4fe" stroke-opacity=".6" stroke-width="2.2" fill="none"/>
+<g fill="#d8b4fe"><path d="M1538,659 L1550,665 L1538,671 Z"/></g>
+<g fill="#e9d5ff" filter="url(#dotGlow)">
+  <circle r="3"><animateMotion dur="3s" repeatCount="indefinite"><mpath href="#p-agent-saas"/></animateMotion></circle>
+</g>
+
+<!-- ============ LEGEND ============ -->
+<g font-size="12.5" fill="#9aa7c2">
+  <line x1="60" y1="1145" x2="92" y2="1145" stroke="#5eead4" stroke-width="2.4" stroke-dasharray="2 6"/>
+  <text x="100" y="1149">CI/CD flow</text>
+
+  <line x1="232" y1="1145" x2="264" y2="1145" stroke="#93c5fd" stroke-width="2.4"/>
+  <text x="272" y="1149">Request routing</text>
+
+  <line x1="430" y1="1145" x2="462" y2="1145" stroke="#86efac" stroke-width="2.4" stroke-dasharray="2 6"/>
+  <text x="470" y="1149">DB traffic</text>
+
+  <line x1="600" y1="1145" x2="632" y2="1145" stroke="#e879f9" stroke-width="2" stroke-dasharray="1 6"/>
+  <text x="640" y="1149">Datadog telemetry</text>
+
+  <line x1="830" y1="1145" x2="862" y2="1145" stroke="#fbbf24" stroke-width="2" stroke-dasharray="1 7"/>
+  <text x="870" y="1149">Image pull</text>
+
+  <circle cx="1010" cy="1145" r="3" fill="#ecfeff" filter="url(#dotGlow)"/>
+  <text x="1022" y="1149">= live data in motion</text>
+
+  <text x="1640" y="1149" text-anchor="end" fill="#5f6c87">generated from the repo's actual Terraform / K8s / Jenkinsfile</text>
+</g>
+
+</svg>
